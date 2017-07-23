@@ -17,9 +17,3 @@ services:
       dockerfile: deploy/app.Dockerfile
     volumes:
       - ./src:/var/www
-    depends_on:
-      - db
-  db:
-    image: postgres:9.6-alpine
-    volumes:
-      - ./dockers/pgdata:/var/lib/postgresql/data
