@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: deploy/web.Dockerfile
+    volumes:
+      - ./src:/var/www
+    ports:
+      - "8000:80"
+    depends_on:
+      - app
+  app:
+    build:
+      context: ./
+      dockerfile: deploy/app.Dockerfile
+    volumes:
+      - ./src:/var/www
+    depends_on:
+      - db
+  db:
+    image: postgres:9.6-alpine
+    volumes:
+      - ./dockers/pgdata:/var/lib/postgresql/data
