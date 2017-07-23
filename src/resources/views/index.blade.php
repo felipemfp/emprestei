@@ -65,7 +65,7 @@
       <form class="ui form" method="POST" action="/">
         <div class="field">
           <label>Montante</label>
-          <input name="amount" type="text" placeholder="R$ 0,00" />
+          <input name="amount" type="text" placeholder="R$ 0,00" autofocus/>
         </div>
         <div class="field">
           <label>Taxa de Juros</label>

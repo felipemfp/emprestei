@@ -17,37 +17,35 @@ class AmericanAmortizationService implements AmortizationService
 
       $balanceDue = $value;
 
-      $payment = new Payment;
-
-      $payment->period = 0;
-      $payment->amountOwned = $balanceDue;
+      $payment = new Payment(0, 0, 0, 0, $balanceDue);
 
       array_push($payments, $payment);
 
       for ($i=0; $i < $loadPeriod - 1; $i++) {
-        $payment = new Payment;
 
-        $payment->period = $i + 1;
-        $payment->interest = $interestRate * $balanceDue;
-        $payment->parcel = $payment->interest;
-        $payment->amortization = 0;
-        $payment->amountOwned = $balanceDue - $payment->amortization;
+        $period = $i + 1;
+        $interest = $interestRate * $balanceDue;
+        $parcel = $payment->interest;
+        $amortization = 0;
+        $amountOwned = $balanceDue - $payment->amortization;
 
+        $payment = new Payment($period, $parcel, $interest, $amortization, $amountOwned);
         array_push($payments, $payment);
+
         $parcelTotal += $payment->parcel;
         $interestTotal += $payment->interest;
         $amortizationTotal += $payment->amortization;
       }
 
-      $payment = new Payment;
+      $period = $loadPeriod;
+      $interest = $interestRate * $balanceDue;
+      $parcel = $value + $payment->interest;
+      $amortization = $value;
+      $amountOwned = 0;
 
-      $payment->period = $loadPeriod;
-      $payment->interest = $interestRate * $balanceDue;
-      $payment->parcel = $value + $payment->interest;
-      $payment->amortization = $value;
-      $payment->amountOwned = 0;
-
+      $payment = new Payment($period, $parcel, $interest, $amortization, $amountOwned);
       array_push($payments, $payment);
+      
       $parcelTotal += $payment->parcel;
       $interestTotal += $payment->interest;
       $amortizationTotal += $payment->amortization;

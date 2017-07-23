@@ -16,25 +16,22 @@ class PriceAmortizationService implements AmortizationService
 
       $balanceDue = $value;
 
-      $payment = new Payment;
-
-      $payment->period = 0;
-      $payment->amountOwned = $balanceDue;
-
+      $payment = new Payment(0,0,0,0, $balanceDue);
       array_push($payments, $payment);
 
       for ($i=0; $i < $loadPeriod; $i++) {
-        $payment = new Payment;
 
-        $payment->period = $i + 1;
-        $payment->parcel = ($balanceDue * $interestRate)/(1 - (1 / pow(1 + $interestRate, $loadPeriod - $i)));
-        $payment->interest = $interestRate * $balanceDue;
-        $payment->amortization = $payment->parcel - $payment->interest;
-        $payment->amountOwned = $balanceDue - $payment->amortization;
+        $period = $i + 1;
+        $parcel = $balanceDue * $interestRate / (1 - (1 / pow(1 + $interestRate, $loadPeriod - $i)));
+        $interest = $interestRate * $balanceDue;
+        $amortization = $parcel - $interest;
+        $amountOwned = $balanceDue - $amortization;
 
-        $balanceDue = $balanceDue - $payment->amortization;
+        $balanceDue = $balanceDue - $amortization;
 
+        $payment = new Payment($period, $parcel, $interest, $amortization, $amountOwned);
         array_push($payments, $payment);
+
         $parcelTotal += $payment->parcel;
         $interestTotal += $payment->interest;
         $amortizationTotal += $payment->amortization;

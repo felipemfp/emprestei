@@ -18,25 +18,23 @@ class ConstantAmortizationService implements AmortizationService
       $balanceDue = $value;
       $amortization = $value / $loadPeriod;
 
-      $payment = new Payment;
-
-      $payment->period = 0;
-      $payment->amountOwned = $balanceDue;
+      $payment = new Payment(0,0,0,0, $balanceDue);
 
       array_push($payments, $payment);
 
       for ($i=0; $i < $loadPeriod; $i++) {
-        $payment = new Payment;
 
-        $payment->period = $i + 1;
-        $payment->interest = $interestRate * $balanceDue;
-        $payment->parcel = $amortization + $payment->interest;
-        $payment->amortization = $payment->parcel - $payment->interest;
-        $payment->amountOwned = $balanceDue - $payment->amortization;
+        $period = $i + 1;
+        $interest = $interestRate * $balanceDue;
+        $parcel = $amortization + $interest;
+        $amortization = $parcel - $interest;
+        $amountOwned = $balanceDue - $amortization;
 
-        $balanceDue -= $payment->amortization;
+        $balanceDue -= $amortization;
 
+        $payment = new Payment($period, $parcel, $interest, $amortization, $amountOwned);
         array_push($payments, $payment);
+
         $parcelTotal += $payment->parcel;
         $interestTotal += $payment->interest;
         $amortizationTotal += $payment->amortization;
