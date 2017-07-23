@@ -62,37 +62,40 @@
           Emprestei
         </div>
       </h1>
-      <form class="ui form" method="POST" action="/">
-        <div class="field">
-          <label>Montante</label>
-          <input name="amount" type="text" placeholder="R$ 0,00" />
-        </div>
-        <div class="field">
-          <label>Taxa de Juros</label>
-          <input name="interest" type="text" placeholder="0,15%" />
-        </div>
-        <div class="field">
-          <label>Quantidade de Parcelas</label>
-          <input name="quantity" type="text" placeholder="12" />
-        </div>
-        <div class="field">
-          <label>Sistema</label>
-          <select name="system" class="ui dropdown">
-            <option value="">Selecione</option>
-            <option value="1">Americano</option>
-            <option value="2">Price</option>
-            <option value="3">SAC</option>
-          </select>
-        </div>
-        <div class="buttons">
-          <a href="#">
-            Saiba mais
-          </a>
-          <button class="ui primary button">
-            Visualizar
-          </button>
-        </div>
-      </form>
+      <table class="ui celled striped table">
+        <thead>
+          <tr>
+            <th colspan="5">
+              Resultado
+            </th>
+          </tr>
+          <tr>
+            <th>Parcela</th>
+            <th>Prestação</th>
+            <th>Juros</th>
+            <th>Amortização</th>
+            <th>Saldo Devedor</th>
+          </tr>
+      </thead>
+      <tbody>
+        @foreach ($payments as $payment)
+          <tr>
+            <td>{{ $payment->period }}</td>
+            <td>{{ $payment->parcel }}</td>
+            <td>{{ $payment->interest }}</td>
+            <td>{{ $payment->amortization }}</td>
+            <td>{{ $payment->amountOwned }}</td>
+          </tr>
+        @endforeach
+        <tr>
+          <td>Total</td>
+          <td>{{ $parcelTotal }}</td>
+          <td>{{ $interestTotal }}</td>
+          <td>{{ $amortizationTotal }}</td>
+          <td> - </td>
+        </tr>
+      </tbody>
+</table>
       <div class="footer">
         <p>
           Feito com <3 por <a href="https://github.com/felipemfp" target="_blank">Felipe</a> e <a href="https://github.com/chicobentojr" target="_blank">Francisco</a>
