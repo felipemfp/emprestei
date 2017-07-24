@@ -19,10 +19,10 @@ class PriceAmortizationService implements AmortizationService
       for ($i=0; $i < $loadPeriod; $i++) {
 
         $period = $i + 1;
-        $parcel = $balanceDue * $interestRate / (1 - (1 / pow(1 + $interestRate, $loadPeriod - $i)));
-        $interest = $interestRate * $balanceDue;
-        $amortization = $parcel - $interest;
-        $amountOwned = $balanceDue - $amortization;
+        $parcel = round($balanceDue * $interestRate / (1 - (1 / pow(1 + $interestRate, $loadPeriod - $i))), 2);
+        $interest = round($interestRate * $balanceDue, 2);
+        $amortization = round($parcel - $interest, 2);
+        $amountOwned = round($balanceDue - $amortization, 2);
 
         $balanceDue = $balanceDue - $amortization;
 
