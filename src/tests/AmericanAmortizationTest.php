@@ -7,9 +7,14 @@ class AmericanAmortizationTest extends TestCase
 {
     private $americanAmortizationService;
 
+    public function setUp()
+    {
+        parent::setUp();
+        $this->americanAmortizationService = new AmericanAmortizationService;
+    }
+
     public function testAmericanAmortizationService()
     {
-        $this->americanAmortizationService = new AmericanAmortizationService;
         $expectsPayments = [
             new Payment(0, 0, 0, 0, 13000),
             new Payment(1, 1170, 1170, 0, 13000),
@@ -29,5 +34,26 @@ class AmericanAmortizationTest extends TestCase
         $resultPayments = $this->americanAmortizationService->calculate(13000, 12, 0.09);
 
         $this->assertEquals($expectsPayments, $resultPayments);
+    }
+
+    public function testAmericanAmortizationServiceValueException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $resultPayments = $this->americanAmortizationService->calculate(-12, 12, 0.01);
+    }
+
+    public function testAmericanAmortizationServiceLoadPeriodException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $resultPayments = $this->americanAmortizationService->calculate(12, -12, 0.01);
+    }
+
+    public function testAmericanAmortizationServiceInterestRateException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $resultPayments = $this->americanAmortizationService->calculate(12, 12, -0.01);
     }
 }

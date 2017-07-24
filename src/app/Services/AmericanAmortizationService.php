@@ -12,6 +12,16 @@ class AmericanAmortizationService implements AmortizationService
   {
       $payments = [];
 
+      if ($value < 0) {
+        throw new \InvalidArgumentException('$value should be greater than zero.');
+      }
+      if ($loadPeriod < 0) {
+        throw new \InvalidArgumentException('$loadPeriod should be greater than zero.');
+      }
+      if ($interestRate < 0) {
+        throw new \InvalidArgumentException('$interestRate should be greater than zero.');
+      }
+
       $balanceDue = $value;
 
       $payment = new Payment(0, 0, 0, 0, $balanceDue);

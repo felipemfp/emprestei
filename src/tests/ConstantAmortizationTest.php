@@ -7,9 +7,14 @@ class ConstantAmortizationTest extends TestCase
 {
     private $constantAmortizationService;
 
+    public function setUp()
+    {
+        parent::setUp();
+        $this->constantAmortizationService = new ConstantAmortizationService;
+    }
+
     public function testConstantAmortizationService()
     {
-        $this->constantAmortizationService = new ConstantAmortizationService;
         $expectsPayments = [
             new Payment(0, 0, 0, 0, 120000),
             new Payment(1, 11200, 1200, 10000, 110000),
@@ -29,5 +34,26 @@ class ConstantAmortizationTest extends TestCase
         $resultPayments = $this->constantAmortizationService->calculate(120000, 12, 0.01);
 
         $this->assertEquals($expectsPayments, $resultPayments);
+    }
+
+    public function testConstantAmortizationServiceValueException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $resultPayments = $this->constantAmortizationService->calculate(-12, 12, 0.01);
+    }
+
+    public function testConstantAmortizationServiceLoadPeriodException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $resultPayments = $this->constantAmortizationService->calculate(12, -12, 0.01);
+    }
+
+    public function testConstantAmortizationServiceInterestRateException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $resultPayments = $this->constantAmortizationService->calculate(12, 12, -0.01);
     }
 }

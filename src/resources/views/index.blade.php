@@ -28,7 +28,7 @@
       background: #fcfcfc;
       box-shadow: 0px 1px 5px #ccc;
     }
-    
+
     .ui.form .field.error input {
       border-radius: 0;
       box-shadow: 0px 1px 5px #ccc!important;
@@ -68,7 +68,7 @@
         </div>
         <div class="field">
           <label>Quantidade de Parcelas</label>
-          <input name="quantity" type="text" placeholder="12" data-mask="#0"/>
+          <input name="quantity" type="text" placeholder="12" data-mask="0#"/>
         </div>
         <div class="field">
           <label>Sistema</label>

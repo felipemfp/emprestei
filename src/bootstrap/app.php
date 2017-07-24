@@ -81,7 +81,9 @@ $app->singleton(
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
-class_alias(Barryvdh\Snappy\Facades\SnappyPdf::class, 'PDF');
+if (!class_exists('PDF')) {
+    class_alias(Barryvdh\Snappy\Facades\SnappyPdf::class, 'PDF');
+}
 $app->register(Barryvdh\Snappy\LumenServiceProvider::class);
 
 /*
