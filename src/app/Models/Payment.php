@@ -21,5 +21,3 @@ class Payment
       $this->amountOwned = round($amountOwned, Payment::DECIMAL_FIELDS_NUMBER);
     }
 }
-
-?>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AmortizationSystem;
 
 use App\Services\ConstantAmortizationService;
 use App\Services\PriceAmortizationService;
@@ -32,28 +33,34 @@ class MainController extends Controller
 
     public function index()
     {
-        return view('index');
+        return view('index')
+          ->with('systems', AmortizationSystem::SYSTEM);
+    }
+    
+    public function pdf(Request $request)
+    {
+      
     }
 
-    public function post(Request $request)
+    public function table(Request $request)
     {
-        $input = $request->all();
-
-        $amount = $input['amount'];
-        $interest = $input['interest'];
-        $quantity = $input['quantity'];
-        $system = $input['system'];
-
-
+        $amount = $request->input('amount');
+        $amount = str_replace('.', '', $amount);
+        $amount = str_replace(',', '.', $amount);
+        $interest = $request->input('interest');
+        $interest = str_replace(',', '.', $interest);
+        $quantity = $request->input('quantity');
+        $system = $request->input('system');
+        
         switch ($system) {
-          case 1:
-            $payments = $this->americanAmortizationService->calculate($amount, $quantity, $interest);
+          case AmortizationSystem::SYSTEM_AMERICAN:
+            $payments = $this->americanAmortizationService->calculate((float)$amount, (int)$quantity, (float)$interest);
             break;
-          case 2:
-            $payments = $this->priceAmortizationService->calculate($amount, $quantity, $interest);
+          case AmortizationSystem::SYSTEM_PRICE:
+            $payments = $this->priceAmortizationService->calculate((float)$amount, (int)$quantity, (float)$interest);
             break;
-          case 3:
-            $payments = $this->constantAmortizationService->calculate($amount, $quantity, $interest);
+          case AmortizationSystem::SYSTEM_SAC:
+            $payments = $this->constantAmortizationService->calculate((float)$amount, (int)$quantity, (float)$interest);
             break;
         }
 
@@ -71,6 +78,7 @@ class MainController extends Controller
                 ->with('payments', $payments)
                 ->with('parcelTotal', $parcelTotal)
                 ->with('interestTotal', $interestTotal)
-                ->with('amortizationTotal', $amortizationTotal);
+                ->with('amortizationTotal', $amortizationTotal)
+                ->with('amortizationLabel', AmortizationSystem::SYSTEM[$system]);
     }
 }

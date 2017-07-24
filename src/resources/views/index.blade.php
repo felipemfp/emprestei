@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('style')
+  @parent
   <style>
     .ui.segment {
       min-width: 30em;
@@ -27,6 +28,11 @@
       background: #fcfcfc;
       box-shadow: 0px 1px 5px #ccc;
     }
+    
+    .ui.form .field.error input {
+      border-radius: 0;
+      box-shadow: 0px 1px 5px #ccc!important;
+    }
 
     .ui.form .field .ui.dropdown {
       border: 0;
@@ -45,43 +51,32 @@
     .buttons .ui.button {
       border-radius: 0;
     }
-
-    .footer {
-      padding-top: 2em;
-      color: #4F4F4F;
-      text-align: center;
-    }
   </style>
 @endsection
 
 @section('content')
   <div class="ui segment">
-      <h1 class="ui header">
-        <img class="ui image" src="/images/logo.svg" />
-        <div class="content">
-          Emprestei
-        </div>
-      </h1>
-      <form class="ui form" method="POST" action="/">
+      @include('header')
+      <form class="ui form" method="POST" action="/tabela">
         <div class="field">
           <label>Montante</label>
-          <input name="amount" type="text" placeholder="R$ 0,00" autofocus/>
+          <input name="amount" type="text" placeholder="0,00" data-mask="#.##0,00" data-mask-reverse="true" autofocus/>
         </div>
         <div class="field">
           <label>Taxa de Juros</label>
-          <input name="interest" type="text" placeholder="0,15%" />
+          <input name="interest" type="text" placeholder="0,15" data-mask="##0,00" data-mask-reverse="true"/>
         </div>
         <div class="field">
           <label>Quantidade de Parcelas</label>
-          <input name="quantity" type="text" placeholder="12" />
+          <input name="quantity" type="text" placeholder="12" data-mask="#0"/>
         </div>
         <div class="field">
           <label>Sistema</label>
           <select name="system" class="ui dropdown">
             <option value="">Selecione</option>
-            <option value="1">Americano</option>
-            <option value="2">Price</option>
-            <option value="3">SAC</option>
+            @foreach ($systems as $key => $value)
+              <option value="{{$key}}">{{$value}}</option>
+            @endforeach
           </select>
         </div>
         <div class="buttons">
@@ -93,11 +88,7 @@
           </button>
         </div>
       </form>
-      <div class="footer">
-        <p>
-          Feito com <3 por <a href="https://github.com/felipemfp" target="_blank">Felipe</a> e <a href="https://github.com/chicobentojr" target="_blank">Francisco</a>
-        </p>
-      </div>
+      @include('footer')
   </div>
 @endsection
 
@@ -105,6 +96,36 @@
   <script>
     $(function() {
       $('.ui.dropdown').dropdown();
+      $('.ui.form').form({
+        inline: true,
+        on: 'blur',
+        fields: {
+          amount: {
+            rules: [{
+              type:'empty',
+              prompt: 'Insira o montante'
+            }]
+          },
+          interest: {
+            rules: [{
+              type:'empty',
+              prompt: 'Insira a taxa de juros'
+            }]
+          },
+          quantity: {
+            rules: [{
+              type:'empty',
+              prompt: 'Insira a quantidade de parcelas'
+            }]
+          },
+          system: {
+            rules: [{
+              type:'empty',
+              prompt: 'Selecione o sistema'
+            }]
+          }
+        }
+      });
     });
   </script>
 @endsection
