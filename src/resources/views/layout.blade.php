@@ -17,11 +17,12 @@
     body {
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       align-content: center;
     }
 
     main {
+      margin: 5em auto;
       max-width: 920px;
     }
 
@@ -32,6 +33,16 @@
 
     .ui.header .ui.image {
       width: 2em;
+    }
+    
+    @media print {
+      html, body {
+        background: white;
+      }
+      
+      .ui.header .ui.image {
+        display: none;
+      }
     }
     </style>
     @yield('style')

@@ -9,6 +9,9 @@ use App\Services\ConstantAmortizationService;
 use App\Services\PriceAmortizationService;
 use App\Services\AmericanAmortizationService;
 
+use PDF;
+use Illuminate\Support\Facades\View;
+
 class MainController extends Controller
 {
     /**
@@ -39,7 +42,9 @@ class MainController extends Controller
     
     public function pdf(Request $request)
     {
-      
+        $view = $this->table($request);
+        $pdf = PDF::setPaper('a4', 'portrait')->setOption('print-media-type', true)->loadHTML($view->render());
+        return $pdf->inline(\Carbon\Carbon::now()->timestamp . '_emprestei.pdf');
     }
 
     public function table(Request $request)
@@ -75,10 +80,16 @@ class MainController extends Controller
         }
 
         return view('result')
-                ->with('payments', $payments)
-                ->with('parcelTotal', $parcelTotal)
-                ->with('interestTotal', $interestTotal)
-                ->with('amortizationTotal', $amortizationTotal)
-                ->with('amortizationLabel', AmortizationSystem::SYSTEM[$system]);
+          ->with('payments', $payments)
+          ->with('parcelTotal', $parcelTotal)
+          ->with('interestTotal', $interestTotal)
+          ->with('amortizationTotal', $amortizationTotal)
+          ->with('amortizationLabel', AmortizationSystem::SYSTEM[$system])
+          ->with('pdfRoute', route('main.pdf', [
+            'amount' => $request->input('amount'),
+            'interest' => $request->input('interest'),
+            'quantity' => $request->input('quantity'),
+            'system' => $request->input('system')
+          ]));
     }
 }

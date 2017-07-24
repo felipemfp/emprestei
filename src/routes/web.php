@@ -12,5 +12,5 @@
 */
 
 $app->get('/', 'MainController@index');
-$app->get('/pdf', 'MainController@pdf');
+$app->get('/pdf', ['uses' => 'MainController@pdf', 'as' => 'main.pdf']);
 $app->post('/tabela', 'MainController@table');

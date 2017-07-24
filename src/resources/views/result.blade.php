@@ -19,6 +19,19 @@
     .buttons .ui.button {
       border-radius: 0;
     }
+    
+    @media print {
+      .ui.segment {
+          background: inherit;
+          box-shadow: inherit;
+          padding: 0;
+          border: 0;
+          width: 100%;
+      }
+      .buttons {
+        display: none;
+      }
+    }
   </style>
 @endsection
 
@@ -39,33 +52,33 @@
             <th>Amortização</th>
             <th>Saldo Devedor</th>
           </tr>
-      </thead>
-      <tbody>
-        @foreach ($payments as $payment)
+        </thead>
+        <tbody>
+          @foreach ($payments as $payment)
+            <tr>
+              <td class="right aligned">{{ $payment->period }}</td>
+              <td class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($payment->parcel, 2) }}</span></td>
+              <td class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($payment->interest, 2) }}</span></td>
+              <td class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($payment->amortization, 2) }}</span></td>
+              <td class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($payment->amountOwned, 2) }}</span></td>
+            </tr>
+          @endforeach
+        </tbody>
+        <tfoot>
           <tr>
-            <td class="right aligned">{{ $payment->period }}</td>
-            <td class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($payment->parcel, 2) }}</span></td>
-            <td class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($payment->interest, 2) }}</span></td>
-            <td class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($payment->amortization, 2) }}</span></td>
-            <td class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($payment->amountOwned, 2) }}</span></td>
+            <th>TOTAL</th>
+            <th class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($parcelTotal, 2) }}</span></th>
+            <th class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($interestTotal, 2) }}</span></th>
+            <th class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($amortizationTotal, 2) }}</span></th>
+            <th class="right aligned"></th>
           </tr>
-        @endforeach
-      </tbody>
-      <tfoot>
-        <tr>
-          <th>TOTAL</th>
-          <th class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($parcelTotal, 2) }}</span></th>
-          <th class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($interestTotal, 2) }}</span></th>
-          <th class="right aligned">R$ <span data-mask="#.##0,00" data-mask-reverse="true">{{ number_format($amortizationTotal, 2) }}</span></th>
-          <th class="right aligned"></th>
-        </tr>
-      </tfoot>
+        </tfoot>
       </table>
       <div class="buttons">
         <a href="#">
           Saiba mais
         </a>
-        <a href="#" target="_blank" class="ui primary button">
+        <a href="{{ $pdfRoute }}" target="_blank" class="ui primary button">
           Baixar
         </a>
       </div>

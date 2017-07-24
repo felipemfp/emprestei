@@ -23,7 +23,7 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+$app->withFacades();
 
 // $app->withEloquent();
 
@@ -81,6 +81,8 @@ $app->singleton(
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+class_alias(Barryvdh\Snappy\Facades\SnappyPdf::class, 'PDF');
+$app->register(Barryvdh\Snappy\LumenServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
