@@ -31,4 +31,3 @@ class ConstantAmortizationTest extends TestCase
         $this->assertEquals($expectsPayments, $resultPayments);
     }
 }
-?>

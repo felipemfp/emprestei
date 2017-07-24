@@ -36,5 +36,3 @@ class ConstantAmortizationService implements AmortizationService
       return $payments;
   }
 }
-
-?>

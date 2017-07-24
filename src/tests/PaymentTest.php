@@ -15,4 +15,3 @@ class PaymentTest extends TestCase
         $this->assertEquals($payment->amountOwned, 15700);
     }
 }
-?>

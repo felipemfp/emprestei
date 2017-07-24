@@ -31,5 +31,3 @@ class AmericanAmortizationTest extends TestCase
         $this->assertEquals($expectsPayments, $resultPayments);
     }
 }
-
-?>

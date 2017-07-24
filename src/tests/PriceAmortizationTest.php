@@ -20,7 +20,12 @@ class PriceAmortizationTest extends TestCase
 
         $resultPayments = $this->priceAmortizationService->calculate(1000, 4, 0.03);
 
-        $this->assertEquals($expectsPayments, $resultPayments);
+        for ($i=0; $i < count($expectsPayments); $i++) { 
+          $this->assertEquals($expectsPayments[$i]->period, $resultPayments[$i]->period);
+          $this->assertEquals($expectsPayments[$i]->parcel, $resultPayments[$i]->parcel, '', 0.01);
+          $this->assertEquals($expectsPayments[$i]->interest, $resultPayments[$i]->interest, '', 0.01);
+          $this->assertEquals($expectsPayments[$i]->amortization, $resultPayments[$i]->amortization, '', 0.01);
+          $this->assertEquals($expectsPayments[$i]->amountOwned, $resultPayments[$i]->amountOwned, '', 0.01);
+        }
     }
 }
-?>

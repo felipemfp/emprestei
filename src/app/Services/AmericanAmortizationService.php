@@ -42,5 +42,3 @@ class AmericanAmortizationService implements AmortizationService
       return $payments;
   }
 }
-
-?>
