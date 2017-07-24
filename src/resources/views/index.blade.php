@@ -80,7 +80,7 @@
           </select>
         </div>
         <div class="buttons">
-          <a href="#">
+          <a href="https://cdn.rawgit.com/felipemfp/emprestei/ea7379d1/REFERENCIA.pdf" target="_blank">
             Saiba mais
           </a>
           <button class="ui primary button">

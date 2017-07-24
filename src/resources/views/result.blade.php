@@ -19,7 +19,7 @@
     .buttons .ui.button {
       border-radius: 0;
     }
-    
+
     @media print {
       .ui.segment {
           background: inherit;
@@ -75,11 +75,11 @@
         </tfoot>
       </table>
       <div class="buttons">
-        <a href="#">
+        <a href="https://cdn.rawgit.com/felipemfp/emprestei/ea7379d1/REFERENCIA.pdf" target="_blank">
           Saiba mais
         </a>
         <a href="{{ $pdfRoute }}" target="_blank" class="ui primary button">
-          Baixar
+          Exportar
         </a>
       </div>
       @include('footer')
