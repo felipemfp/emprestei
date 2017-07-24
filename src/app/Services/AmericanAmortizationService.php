@@ -11,9 +11,6 @@ class AmericanAmortizationService implements AmortizationService
   public function calculate($value, $loadPeriod, $interestRate)
   {
       $payments = [];
-      $parcelTotal = 0;
-      $interestTotal = 0;
-      $amortizationTotal = 0;
 
       $balanceDue = $value;
 
@@ -25,16 +22,12 @@ class AmericanAmortizationService implements AmortizationService
 
         $period = $i + 1;
         $interest = $interestRate * $balanceDue;
-        $parcel = $payment->interest;
+        $parcel = $interest;
         $amortization = 0;
         $amountOwned = $balanceDue - $payment->amortization;
 
         $payment = new Payment($period, $parcel, $interest, $amortization, $amountOwned);
         array_push($payments, $payment);
-
-        $parcelTotal += $payment->parcel;
-        $interestTotal += $payment->interest;
-        $amortizationTotal += $payment->amortization;
       }
 
       $period = $loadPeriod;
@@ -45,17 +38,8 @@ class AmericanAmortizationService implements AmortizationService
 
       $payment = new Payment($period, $parcel, $interest, $amortization, $amountOwned);
       array_push($payments, $payment);
-      
-      $parcelTotal += $payment->parcel;
-      $interestTotal += $payment->interest;
-      $amortizationTotal += $payment->amortization;
 
-      return [
-        'payments' => $payments,
-        'parcelTotal' => $parcelTotal,
-        'interestTotal' => $interestTotal,
-        'amortizationTotal' => $amortizationTotal
-      ];
+      return $payments;
   }
 }
 

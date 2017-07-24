@@ -47,20 +47,30 @@ class MainController extends Controller
 
         switch ($system) {
           case 1:
-            $result = $this->americanAmortizationService->calculate($amount, $quantity, $interest);
+            $payments = $this->americanAmortizationService->calculate($amount, $quantity, $interest);
             break;
           case 2:
-            $result = $this->priceAmortizationService->calculate($amount, $quantity, $interest);
+            $payments = $this->priceAmortizationService->calculate($amount, $quantity, $interest);
             break;
           case 3:
-            $result = $this->constantAmortizationService->calculate($amount, $quantity, $interest);
+            $payments = $this->constantAmortizationService->calculate($amount, $quantity, $interest);
             break;
         }
 
+        $parcelTotal = 0;
+        $interestTotal = 0;
+        $amortizationTotal = 0;
+
+        foreach ($payments as $payment) {
+            $parcelTotal += $payment->parcel;
+            $interestTotal += $payment->interest;
+            $amortizationTotal += $payment->amortization;
+        }
+
         return view('result')
-                ->with('payments', $result['payments'])
-                ->with('parcelTotal', $result['parcelTotal'])
-                ->with('interestTotal', $result['interestTotal'])
-                ->with('amortizationTotal', $result['amortizationTotal']);
+                ->with('payments', $payments)
+                ->with('parcelTotal', $parcelTotal)
+                ->with('interestTotal', $interestTotal)
+                ->with('amortizationTotal', $amortizationTotal);
     }
 }
